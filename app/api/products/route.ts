@@ -1,0 +1,1 @@
+import{NextResponse}from"next/server";import{products}from"@/lib/data";export async function GET(request:Request){const{searchParams}=new URL(request.url);const q=(searchParams.get("q")||"").toLowerCase();return NextResponse.json(products.filter(p=>!q||`${p.name} ${p.brand} ${p.category}`.toLowerCase().includes(q)))}
