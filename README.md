@@ -39,7 +39,9 @@ npm run dev
 2. Import repository ใน Netlify
 3. เชื่อม PostgreSQL และกำหนด Environment Variables
 4. ตั้ง `NEXT_PUBLIC_APP_URL` เป็น URL Production ของ Netlify
-5. Deploy โดย Build Command ใช้ `npm run build` และ Publish directory ใช้ `.next`
+5. Deploy โดย Build Command ใช้ `npm run netlify-build` และ Publish directory ใช้ `.next`
+
+คำสั่ง `netlify-build` จะสร้าง/อัปเดตตาราง Prisma, สร้างบัญชี Super Admin จาก Environment Variables และ Build แอปตามลำดับ
 
 ค่าที่ต้องกำหนดบน Netlify:
 

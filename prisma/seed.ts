@@ -40,8 +40,12 @@ async function main() {
     create: { userId: user.id, roleId: role.id },
   });
 
-  console.log(`Super Admin ready: ${email}`);
+  console.log("Super Admin account is ready.");
 }
 
 main()
+  .catch((error) => {
+    console.error("Unable to seed the administrator account.", error);
+    process.exitCode = 1;
+  })
   .finally(async () => prisma.$disconnect());
