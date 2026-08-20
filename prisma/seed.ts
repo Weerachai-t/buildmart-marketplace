@@ -98,6 +98,42 @@ async function main() {
     create: { userId: user.id, roleId: role.id },
   });
 
+  const supplier = await prisma.supplier.upsert({
+    where: { ownerId: user.id },
+    update: { status: "APPROVED" },
+    create: { ownerId: user.id, companyName: "BuildMart Direct", slug: "buildmart-direct", province: "กรุงเทพมหานคร", status: "APPROVED" },
+  });
+
+  const categoryNames = ["ปูนซีเมนต์", "คอนกรีตผสมเสร็จ", "เหล็ก", "หลังคา", "สี", "กระเบื้อง", "อุปกรณ์ไฟฟ้า", "ประปา"];
+  const categoryMap = new Map<string, string>();
+  for (const [index, name] of categoryNames.entries()) {
+    const category = await prisma.category.upsert({ where: { slug: `category-${index + 1}` }, update: { name }, create: { name, slug: `category-${index + 1}` } });
+    categoryMap.set(name, category.id);
+  }
+
+  const brandNames = ["SCG", "BUILD MIX", "TATA", "Diamond", "TOA", "COTTO"];
+  const brandMap = new Map<string, string>();
+  for (const name of brandNames) {
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const brand = await prisma.brand.upsert({ where: { slug }, update: { name }, create: { name, slug } });
+    brandMap.set(name, brand.id);
+  }
+
+  const starterProducts = [
+    { slug: "portland-cement-50kg", sku: "BM-CEMENT-001", name: "ปูนซีเมนต์ปอร์ตแลนด์ 50 กก.", category: "ปูนซีเมนต์", brand: "SCG", unit: "ถุง", price: 145, image: "▰", description: "ปูนซีเมนต์ปอร์ตแลนด์ประเภท 1 มาตรฐาน มอก. 15" },
+    { slug: "ready-mix-280ksc", sku: "BM-CONCRETE-001", name: "คอนกรีตผสมเสร็จ 280 KSC", category: "คอนกรีตผสมเสร็จ", brand: "BUILD MIX", unit: "คิว", price: 2150, image: "▦", description: "คอนกรีตผสมเสร็จกำลังอัด 280 KSC สำหรับงานโครงสร้าง" },
+    { slug: "deformed-bar-12mm", sku: "BM-STEEL-001", name: "เหล็กข้ออ้อย SD40 DB12", category: "เหล็ก", brand: "TATA", unit: "เส้น", price: 192, image: "═", description: "เหล็กข้ออ้อยเกรด SD40 ขนาด 12 มม. ความยาว 10 เมตร" },
+    { slug: "roof-tile-prestige", sku: "BM-ROOF-001", name: "กระเบื้องหลังคา Prestige", category: "หลังคา", brand: "Diamond", unit: "แผ่น", price: 68, image: "⌂", description: "กระเบื้องหลังคาสีเทาโมเดิร์น สำหรับบ้านพักอาศัย" },
+    { slug: "interior-paint-9l", sku: "BM-PAINT-001", name: "สีน้ำอะคริลิกภายใน 9 ลิตร", category: "สี", brand: "TOA", unit: "ถัง", price: 1290, image: "◉", description: "สีน้ำอะคริลิกสำหรับงานภายใน ขนาด 9 ลิตร" },
+    { slug: "porcelain-tile-60", sku: "BM-TILE-001", name: "กระเบื้องพอร์ซเลน 60×60 ซม.", category: "กระเบื้อง", brand: "COTTO", unit: "กล่อง", price: 699, image: "▦", description: "กระเบื้องพอร์ซเลนผิวด้าน ขนาด 60 × 60 ซม." },
+  ];
+
+  for (const item of starterProducts) {
+    const existing = await prisma.product.findUnique({ where: { slug: item.slug } });
+    if (existing) continue;
+    await prisma.product.create({ data: { supplierId: supplier.id, categoryId: categoryMap.get(item.category)!, brandId: brandMap.get(item.brand), sku: item.sku, name: item.name, slug: item.slug, description: item.description, unit: item.unit, basePrice: item.price, minOrderQty: 1, status: "ACTIVE", images: { create: { url: item.image, altText: item.name } } } });
+  }
+
   console.log("Super Admin account is ready.");
 }
 
