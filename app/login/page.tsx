@@ -1,1 +1,31 @@
-import Header from"@/components/header";import Footer from"@/components/footer";export default function Login(){return <><Header/><main><div className="form-card" style={{maxWidth:460}}><h1>เข้าสู่ระบบ</h1><form style={{display:"grid",gap:15}}><label>อีเมล<input type="email"/></label><label>รหัสผ่าน<input type="password"/></label><button type="button" className="btn orange">เข้าสู่ระบบ</button><button type="button" className="btn" style={{background:"white",color:"#333",border:"1px solid #dfe5eb"}}>G&nbsp; เข้าสู่ระบบด้วย Google</button></form><p style={{fontSize:11,textAlign:"center"}}>ยังไม่มีบัญชี? <a href="/supplier/register">สมัครสมาชิก</a></p></div></main><Footer/></>}
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+import LoginForm from "./login-form";
+
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl?: string }>;
+}) {
+  const { callbackUrl } = await searchParams;
+  const safeCallbackUrl =
+    callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+      ? callbackUrl
+      : "/customer/dashboard";
+
+  return (
+    <>
+      <Header />
+      <main>
+        <div className="form-card" style={{ maxWidth: 460 }}>
+          <h1>เข้าสู่ระบบ</h1>
+          <LoginForm callbackUrl={safeCallbackUrl} />
+          <p style={{ fontSize: 11, textAlign: "center" }}>
+            ยังไม่มีบัญชี? <a href="/supplier/register">สมัครสมาชิก</a>
+          </p>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

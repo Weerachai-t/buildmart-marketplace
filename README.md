@@ -49,6 +49,16 @@ npm run dev
 - `AUTH_GOOGLE_SECRET`
 - `NEXT_PUBLIC_APP_URL`
 
+## สร้างบัญชีผู้ดูแลระบบ
+
+กำหนด `ADMIN_EMAIL` และ `ADMIN_PASSWORD` (อย่างน้อย 12 ตัวอักษร) แล้วรัน:
+
+```bash
+npm run db:seed
+```
+
+หน้า `/admin/dashboard` จะเปิดได้เฉพาะบัญชีที่มีสิทธิ์ `SUPER_ADMIN`, `CATEGORY_MANAGER` หรือ `SALES_ADMIN` เท่านั้น
+
 ## Production checklist
 
 - เชื่อม Form กับ API และ PostgreSQL จริง
