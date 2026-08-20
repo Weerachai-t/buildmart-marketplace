@@ -4,6 +4,10 @@ import { hasAdminAccess } from "@/lib/authz";
 export default async function Header() {
   const session = await auth();
   const showAdmin = hasAdminAccess(session?.user?.roles);
+  const isSignedIn = Boolean(session?.user);
+  const accountHref = isSignedIn
+    ? "/customer/profile"
+    : "/login?callbackUrl=/customer/profile";
 
-  return <><div className="topbar"><div className="container"><span>จัดส่งวัสดุก่อสร้างทั่วประเทศ · ขอราคางานโครงการได้</span><div><a href="/supplier/register">สมัครเป็นซัพพลายเออร์</a><a href="/login">เข้าสู่ระบบ</a></div></div></div><header className="main-header"><div className="container header-row"><a className="logo" href="/"><i>B</i><span>BUILDMART<small>CONSTRUCTION MARKETPLACE</small></span></a><label className="search"><input placeholder="ค้นหาปูน เหล็ก หลังคา สี กระเบื้อง..."/><button>⌕</button></label><div className="header-actions"><a href="/customer/dashboard">♙<small>บัญชีของฉัน</small></a><a href="/cart">🛒<small>ตะกร้าสินค้า</small></a></div></div><nav className="container nav-row"><a href="#categories">☰ สินค้าทุกหมวดหมู่</a><a href="/products">สินค้าทั้งหมด</a><a href="/quotation">ขอใบเสนอราคา</a><a href="/supplier/register">ขายสินค้ากับเรา</a>{showAdmin ? <a href="/admin/dashboard">Admin</a> : null}</nav></header></>;
+  return <><div className="topbar"><div className="container"><span>จัดส่งวัสดุก่อสร้างทั่วประเทศ · ขอราคางานโครงการได้</span><div><a href="/supplier/register">สมัครเป็นซัพพลายเออร์</a><a href={accountHref}>{isSignedIn ? session?.user?.name || "Profile" : "เข้าสู่ระบบ"}</a></div></div></div><header className="main-header"><div className="container header-row"><a className="logo" href="/"><i>B</i><span>BUILDMART<small>CONSTRUCTION MARKETPLACE</small></span></a><label className="search"><input placeholder="ค้นหาปูน เหล็ก หลังคา สี กระเบื้อง..."/><button>⌕</button></label><div className="header-actions"><a href={accountHref}>♙<small>{isSignedIn ? "Profile" : "บัญชีของฉัน"}</small></a><a href="/cart">🛒<small>ตะกร้าสินค้า</small></a></div></div><nav className="container nav-row"><a href="#categories">☰ สินค้าทุกหมวดหมู่</a><a href="/products">สินค้าทั้งหมด</a><a href="/quotation">ขอใบเสนอราคา</a><a href="/supplier/register">ขายสินค้ากับเรา</a>{showAdmin ? <a href="/admin/dashboard">Admin</a> : null}</nav></header></>;
 }

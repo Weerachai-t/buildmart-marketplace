@@ -11,7 +11,7 @@ export default async function Login({
   const safeCallbackUrl =
     callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
       ? callbackUrl
-      : "/customer/dashboard";
+      : "/customer/profile";
 
   return (
     <>

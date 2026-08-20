@@ -1,19 +1,10 @@
-import { auth } from "@/auth";
-import { hasAdminAccess } from "@/lib/authz";
-import { redirect } from "next/navigation";
+import { PERMISSIONS, requirePermission } from "@/lib/authz";
+import "./admin.css";
 
 export default async function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/login?callbackUrl=/admin/dashboard");
-  }
-
-  if (!hasAdminAccess(session.user.roles)) {
-    redirect("/unauthorized");
-  }
+  await requirePermission(PERMISSIONS.ADMIN_DASHBOARD_VIEW, "/admin/dashboard");
 
   return children;
 }

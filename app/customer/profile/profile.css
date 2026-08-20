@@ -1,0 +1,104 @@
+.profile-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.profile-heading h1 {
+  margin: 8px 0 4px;
+  font-size: 32px;
+}
+
+.profile-heading p {
+  margin: 0;
+  color: #718397;
+  font-size: 13px;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 20px;
+}
+
+.profile-summary {
+  padding: 30px;
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 104px;
+  height: 104px;
+  border: 4px solid #edf4fb;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 18px;
+}
+
+.profile-initials {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, var(--blue), #25a4e8);
+  color: white;
+  font-size: 42px;
+  font-weight: 900;
+}
+
+.profile-summary h2 { margin: 0 0 7px; }
+.profile-summary p { color: #718397; font-size: 12px; overflow-wrap: anywhere; }
+.profile-details { padding: 28px; }
+
+.profile-section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+}
+
+.profile-section-head small,
+.profile-section-head span { color: #718397; font-size: 10px; }
+.profile-section-head h2 { margin: 5px 0 0; }
+
+.profile-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 0;
+}
+
+.profile-fields div {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-fields dt { color: #718397; font-size: 10px; margin-bottom: 7px; }
+.profile-fields dd { margin: 0; font-size: 13px; font-weight: 700; }
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.profile-stats article { padding: 18px; background: #f4f8fc; border-radius: 8px; }
+.profile-stats span { display: block; color: #718397; font-size: 10px; }
+.profile-stats strong { display: block; margin-top: 8px; font-size: 21px; color: var(--navy); }
+
+@media (max-width: 900px) {
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-heading { align-items: flex-start; }
+  .header-actions a:first-child { display: block; }
+}
+
+@media (max-width: 600px) {
+  .profile-heading,
+  .profile-section-head { display: grid; }
+  .profile-fields,
+  .profile-stats { grid-template-columns: 1fr; }
+  .profile-page { padding-top: 30px; }
+  .profile-heading .btn { width: 100%; }
+}

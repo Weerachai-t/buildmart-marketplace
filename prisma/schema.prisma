@@ -56,6 +56,15 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum RfqStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  QUOTING
+  CANCELLED
+}
+
 model User {
   id String @id @default(cuid())
   name String?
@@ -71,6 +80,8 @@ model User {
   sessions Session[]
   addresses Address[]
   orders Order[]
+  rfqs Rfq[] @relation("CustomerRfqs")
+  reviewedRfqs Rfq[] @relation("ReviewedRfqs")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -80,6 +91,26 @@ model Role {
   code RoleCode @unique
   name String
   users UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id String @id @default(cuid())
+  code String @unique
+  name String
+  module String
+  action String
+  roles RolePermission[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RolePermission {
+  roleId String
+  permissionId String
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([roleId, permissionId])
 }
 
 model UserRole {
@@ -272,6 +303,28 @@ model Payment {
   evidenceUrl String?
   order Order @relation(fields: [orderId], references: [id])
   createdAt DateTime @default(now())
+}
+
+model Rfq {
+  id String @id @default(cuid())
+  rfqNumber String @unique
+  customerId String
+  projectName String
+  customerType String
+  province String
+  deliveryDate DateTime?
+  description String
+  boqFileName String?
+  status RfqStatus @default(SUBMITTED)
+  approvedById String?
+  approvedAt DateTime?
+  reviewNote String?
+  customer User @relation("CustomerRfqs", fields: [customerId], references: [id])
+  approvedBy User? @relation("ReviewedRfqs", fields: [approvedById], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([status, createdAt])
+  @@index([customerId, createdAt])
 }
 
 model Account {

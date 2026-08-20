@@ -9,7 +9,10 @@ Marketplace วัสดุก่อสร้างแบบ Multi-Supplier พ�
 - Local cart prototype, checkout, Bank Transfer/QR/Corporate Credit UI
 - Supplier onboarding + API validation
 - Customer, Supplier และ Admin dashboards
-- Prisma schema: RBAC, supplier, catalog, attributes, warehouse, inventory, orders, payments
+- Customer Profile หลังเข้าสู่ระบบ พร้อมข้อมูลบัญชีและภาพรวมการใช้งาน
+- Dynamic RBAC แยกสิทธิ์ดูข้อมูล (`VIEW`) และจัดการข้อมูล (`MANAGE`) ราย Admin Role
+- RFQ workflow: ลูกค้าส่งคำขอ → Admin ตรวจสอบ → อนุมัติ/ปฏิเสธพร้อมหมายเหตุ
+- Prisma schema: RBAC, RFQ, supplier, catalog, attributes, warehouse, inventory, orders, payments
 - NextAuth Google และ Email/Password credentials scaffold
 
 ## Local setup
@@ -59,7 +62,11 @@ npm run dev
 npm run db:seed
 ```
 
-หน้า `/admin/dashboard` จะเปิดได้เฉพาะบัญชีที่มีสิทธิ์ `SUPER_ADMIN`, `CATEGORY_MANAGER` หรือ `SALES_ADMIN` เท่านั้น
+หน้า `/admin/dashboard` ตรวจสิทธิ์ `ADMIN_DASHBOARD_VIEW` โดย `SUPER_ADMIN` มีสิทธิ์ทั้งหมดอัตโนมัติ
+
+- จัดการ Role Permission: `/admin/permissions`
+- ตรวจและอนุมัติ RFQ: `/admin/rfqs`
+- ส่งคำขอใบเสนอราคา: `/quotation`
 
 ## Production checklist
 
