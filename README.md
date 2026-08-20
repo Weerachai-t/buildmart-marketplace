@@ -25,20 +25,29 @@ npm run dev
 
 ## PostgreSQL
 
-1. สร้าง PostgreSQL บน Neon, Supabase หรือผู้ให้บริการที่รองรับ Vercel
+1. สร้าง PostgreSQL บน Neon, Supabase หรือผู้ให้บริการ Cloud PostgreSQL
 2. ใส่ connection string ใน `DATABASE_URL`
 3. รัน `npm run db:push`
 
 ## Authentication
 
-กำหนด `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` ใน `.env` และ Vercel Environment Variables
+กำหนด `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` ใน `.env` และ Environment Variables ของผู้ให้บริการ Hosting
 
-## Deploy to Vercel
+## Deploy to Netlify
 
 1. Push repository ขึ้น GitHub
-2. Import repository ใน Vercel
+2. Import repository ใน Netlify
 3. เชื่อม PostgreSQL และกำหนด Environment Variables
-4. Deploy โดย Build Command ใช้ `npm run build`
+4. ตั้ง `NEXT_PUBLIC_APP_URL` เป็น URL Production ของ Netlify
+5. Deploy โดย Build Command ใช้ `npm run build` และ Publish directory ใช้ `.next`
+
+ค่าที่ต้องกำหนดบน Netlify:
+
+- `DATABASE_URL`
+- `AUTH_SECRET`
+- `AUTH_GOOGLE_ID`
+- `AUTH_GOOGLE_SECRET`
+- `NEXT_PUBLIC_APP_URL`
 
 ## Production checklist
 
